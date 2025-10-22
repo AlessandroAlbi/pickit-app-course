@@ -4,6 +4,22 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router';
 import Navbar from './Navbar';
 
+// Mock di Account Modal (to avoid too many files open)
+vi.mock('./AccountModal', () => {
+  return {
+    __esModule: true,
+    default: ({ open, onClose }) => {
+      if (!open) return null;
+      return (
+        <div role="dialog">
+          <h2>Account Modal</h2>
+          <button onClick={onClose}>Close</button>
+        </div>
+      );
+    },
+  };
+});
+
 // Mock di useNavigate
 const mockNavigate = vi.fn();
 vi.mock('react-router', async (orig) => {
@@ -13,6 +29,9 @@ vi.mock('react-router', async (orig) => {
     useNavigate: () => mockNavigate,
   };
 });
+
+// Mock della funzione setFeature
+const setFeatureMock = vi.fn();
 
 describe('Navbar Component render', () => {
   beforeEach(() => {
@@ -24,6 +43,7 @@ describe('Navbar Component render', () => {
     );
     // Reset dei mock prima di ogni test
     mockNavigate.mockReset();
+    setFeatureMock.mockReset();
   });
 
   it('should render basic elements', () => {
@@ -53,6 +73,22 @@ describe('Navbar Component render', () => {
     await user.click(logoutOption);
     expect(mockNavigate).toHaveBeenCalledWith('/login', { replace: true });
   });
+
+  it('should open account modal on account click', async () => {
+    const user = userEvent.setup();
+
+    // Apro il menu utente
+    const userMenuButton = screen.getByLabelText('user-avatar');
+    await user.click(userMenuButton);
+
+    // Clicco su Account
+    const accountOption = screen.getByRole('menuitem', { name: 'Account' });
+    await user.click(accountOption);
+
+    // Verifico che la modal sia aperta
+    // Può sembrare di non star testando qualcosa di vero, ma in realtà il comportamento è al 100% quello reale
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
 });
 
 describe('Open and close nav menu', () => {
@@ -80,5 +116,32 @@ describe('Open and close nav menu', () => {
     await waitFor(() => {
       expect(screen.queryByRole('menu')).not.toBeInTheDocument();
     });
+  });
+});
+
+describe('Click on navbar pages', () => {
+  beforeEach(async () => {
+    // Renderizza il componente prima di ogni test
+    render(
+      <MemoryRouter>
+        <Navbar setFeature={setFeatureMock} />
+      </MemoryRouter>,
+    );
+  });
+
+  it('should call setFeature on desktop button click', async () => {
+    const user = userEvent.setup();
+    
+    // Reset del mock prima del test
+    setFeatureMock.mockReset();
+    
+    // Clicco su un pulsante della navbar (versione desktop)
+    // Nota: questi sono i pulsanti che non sono nel menu mobile
+    const homeButton = screen.getByRole('button', { name: 'Home' });
+    await user.click(homeButton);
+    
+    // Verifico che setFeature sia stata chiamata
+    expect(setFeatureMock).toHaveBeenCalledWith('Home');
+    expect(setFeatureMock).toHaveBeenCalledTimes(1);
   });
 });

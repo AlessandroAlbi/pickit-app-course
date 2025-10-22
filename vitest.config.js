@@ -5,6 +5,7 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
+      watchExclude: ['node_modules', 'dist', '.git'],
       globals: true,
       environment: 'jsdom',
       setupFiles: './src/setupTests.js', // File eseguito prima dei test

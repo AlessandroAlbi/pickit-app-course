@@ -13,14 +13,25 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AbcIcon from '@mui/icons-material/Abc';
 import { useNavigate } from 'react-router';
+import AccountModal from './AccountModal';
 
 const pages = ['Home', 'Products', 'Customers'];
 const settings = ['Account', 'Logout'];
 
-function ResponsiveAppBar() {
+function Navbar({setFeature}) {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [isAccountModalOpen, setIsAccountModalOpen] = React.useState(false);
+
+  const handleAccountClick = () => {
+    handleCloseUserMenu();
+    setIsAccountModalOpen(true);
+  };
+
+  const handleCloseAccountModal = () => {
+    setIsAccountModalOpen(false);
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -45,9 +56,16 @@ function ResponsiveAppBar() {
   const handleSettingClick = (setting) => {
     if (setting === 'Logout') {
       handleLogout();
+    } else if (setting === 'Account') {
+      handleAccountClick();
     } else {
       handleCloseUserMenu();
     }
+  };
+
+  const handlePageClick = (page) => {
+    handleCloseNavMenu();
+    setFeature(page);
   };
 
   return (
@@ -87,7 +105,7 @@ function ResponsiveAppBar() {
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() => handlePageClick(page)}>
                   <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
                 </MenuItem>
               ))}
@@ -101,7 +119,7 @@ function ResponsiveAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => handlePageClick(page)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
@@ -150,7 +168,13 @@ function ResponsiveAppBar() {
           </Box>
         </Toolbar>
       </Container>
+
+      {/* User account */}
+      <AccountModal 
+        open={isAccountModalOpen} 
+        onClose={handleCloseAccountModal} 
+      />
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+export default Navbar;
