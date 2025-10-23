@@ -44,7 +44,6 @@ const Home = () => {
       <Navbar setFeature={setFeature} />
       {feature === 'Home' && (
         <div>
-          <h1 className='text-4xl'>Home</h1>
           {orders.map((order) => (
             <div key={order.id} className='mb-4 rounded border p-4 flex justify-between items-center'>
               <div>

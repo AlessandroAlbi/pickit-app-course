@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:cypress": "cypress open"
   },
   "dependencies": {
     "@apollo/client": "^4.0.7",
@@ -37,6 +38,7 @@
     "@vitejs/plugin-react-swc": "^4.1.0",
     "@vitest/coverage-v8": "^4.0.1",
     "@vitest/ui": "^4.0.1",
+    "cypress": "^15.5.0",
     "eslint": "^9.36.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^5.2.0",

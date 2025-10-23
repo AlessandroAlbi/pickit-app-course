@@ -14,11 +14,6 @@ describe('Home component render', () => {
     );
   });
 
-  it('should render basic elements', () => {
-    // Verify that the Home heading is present
-    expect(screen.getByRole('heading', { name: 'Home' })).toBeInTheDocument(); // Exact match
-  });
-
   it('should render orders fetched from API', async () => {
     // Verify that the orders are rendered
     expect(await screen.findByText('Order ID: 1')).toBeInTheDocument();
