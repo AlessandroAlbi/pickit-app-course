@@ -124,6 +124,52 @@ describe('AccountModal Component', () => {
     expect(bioField).toHaveValue('Passionate developer with 8+ years of experience in React and Node.js.');
   });
 
+  // FARLO SOLO DOPO AVER PARLATO DEI COVERAGE
+  it('should handle fetch error gracefully', async () => {
+    // Import MSW server to override the handler for this test
+    const { server } = await import('../mocks/server');
+    const { http, HttpResponse } = await import('msw');
+
+    // Override the handler to simulate a failed request
+    server.use(
+      http.get('https://api.example.com/account', () => {
+        return HttpResponse.json(
+          { error: 'Internal Server Error' },
+          { status: 500 }
+        );
+      })
+    );
+
+    // Spy on console.error to verify error handling
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    render(<AccountModal open={true} onClose={onCloseMock} />);
+    
+    // Initially should show loading spinner
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
+
+    // Wait for loading to finish
+    await waitFor(() => {
+      expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+    });
+
+    // Verify that console.error was called
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Error fetching account data:',
+      expect.any(Error)
+    );
+
+    // Fields should be empty or with default values
+    const firstNameField = screen.getByLabelText(/first name/i);
+    const lastNameField = screen.getByLabelText(/last name/i);
+    
+    expect(firstNameField).toHaveValue('');
+    expect(lastNameField).toHaveValue('');
+
+    // Cleanup
+    consoleErrorSpy.mockRestore();
+  });
+
   // Test 4: Check the update on save
   it('should update data when save button is clicked', async () => {
     const user = userEvent.setup();

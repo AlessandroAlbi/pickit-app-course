@@ -9,6 +9,11 @@ export default mergeConfig(
       globals: true,
       environment: 'jsdom',
       setupFiles: './src/setupTests.js', // File eseguito prima dei test
+      coverage: {
+        provider: 'v8', // or 'istanbul'
+        reporter: ['text', 'json', 'html'],
+        all:false,
+      },
     },
   }),
 );
