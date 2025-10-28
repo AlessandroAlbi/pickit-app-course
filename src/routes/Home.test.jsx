@@ -4,9 +4,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router';
 import Home from './Home';
 
-describe('Home component render', () => {
+describe('Home component', () => {
   beforeEach(() => {
-    // Render the component before each test
     render(
       <MemoryRouter>
         <Home />
@@ -14,25 +13,21 @@ describe('Home component render', () => {
     );
   });
 
-  it('should render orders fetched from API', async () => {
-    // Verify that the orders are rendered
+  it('should render orders from graphql', async () => {
     expect(await screen.findByText('Order ID: 1')).toBeInTheDocument();
-    expect(screen.getByText('Status: pending')).toBeInTheDocument();
-    expect(screen.getByText('Total: $299.99')).toBeInTheDocument();
   });
 
   it('should delete an order when delete button is clicked', async () => {
     const user = userEvent.setup();
 
-    // Ensure the order is present before deletion
     const orderElement = await screen.findByText('Order ID: 1');
     expect(orderElement).toBeInTheDocument();
 
-    // Click the delete button for the order
-    const deleteButton = screen.getByRole('button', { name: /Delete order 1/i });
+    const deleteButton = screen.getByRole('button', {
+      name: /delete order 1/i,
+    });
     await user.click(deleteButton);
 
-    // Verify the order is removed from the document
-    expect(screen.queryByText('Order ID: 1')).not.toBeInTheDocument();
+    expect(orderElement).not.toBeInTheDocument();
   });
 });

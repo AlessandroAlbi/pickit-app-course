@@ -1,16 +1,15 @@
-# React + Vite
+# DEPLOY INSTRUCTIONS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+*La repository, il codice e tutto il materiale è privato e di solo utilizzo per gli sviluppatori ed installatori **MissionA srl**. Ogni violazione di utilizzo è severamente vietata nonché punita secondo la legge.*
 
-Currently, two official plugins are available:
+## Rilascio in locale (docker)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Build dell'immagine `docker build -t test-app-react-js-pipeline .`
+2. Esecuzione locale dell'immagine `docker run --name test-app-react-js-pipeline -d -p 80:80 test-app-react-js-pipeline:latest`
+3. Rilascio di una nuova revisione in Cloud Run
 
-## React Compiler
+## Rilascio in staging manuale
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Build dell'immagine `docker build -t europe-west8-docker.pkg.dev/asteria-dev-398f5/pickit/test-app-react-js-pipeline .`
+2. Push dell'immagine `docker push europe-west8-docker.pkg.dev/asteria-dev-398f5/pickit/test-app-react-js-pipeline:latest`
+3. Rilascio di una nuova revisione in Cloud Run

@@ -45,7 +45,10 @@ const Home = () => {
       {feature === 'Home' && (
         <div>
           {orders.map((order) => (
-            <div key={order.id} className='mb-4 rounded border p-4 flex justify-between items-center'>
+            <div
+              key={order.id}
+              className='mb-4 flex items-center justify-between rounded border p-4'
+            >
               <div>
                 <h2 className='text-2xl'>Order ID: {order.id}</h2>
                 <p>Status: {order.status}</p>
@@ -54,7 +57,7 @@ const Home = () => {
               <button
                 aria-label={`Delete order ${order.id}`}
                 onClick={() => handleDeleteOrder(order.id)}
-                className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                className='rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700'
               >
                 🗑️
               </button>

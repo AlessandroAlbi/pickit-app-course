@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router';
 import Login from './Login';
 
-// Mock di useNavigate
 const mockNavigate = vi.fn();
 vi.mock('react-router', async (orig) => {
   const actual = await orig();
@@ -14,7 +13,7 @@ vi.mock('react-router', async (orig) => {
   };
 });
 
-describe('Login component render', () => {
+describe('Login component render base', () => {
   beforeEach(() => {
     // Renderizza il componente prima di ogni test
     render(
@@ -35,7 +34,7 @@ describe('Login component render', () => {
       screen.getByRole('heading', { name: 'Welcome back!' }),
     ).toBeInTheDocument(); // Exact match
 
-    expect(screen.getByRole('heading', { level: 6 })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
   });
 
   it('should render login form basic elements', () => {
@@ -47,8 +46,7 @@ describe('Login component render', () => {
     ).toBeInTheDocument();
   });
 
-  it('email autofocus on load', () => {
-    // Verifica che il campo email abbia l'autofocus
+  it('should have focus on email input', () => {
     expect(screen.getByLabelText('Email Address')).toHaveFocus();
   });
 
@@ -59,46 +57,58 @@ describe('Login component render', () => {
 
     expect(password.type).toBe('password');
     await user.click(toggle);
+
     expect(password.type).toBe('text');
-    expect(screen.getByRole('button', { name: /hide password/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /hide password/i }),
+    ).toBeInTheDocument();
+
     await user.click(screen.getByRole('button', { name: /hide password/i }));
     expect(password.type).toBe('password');
   });
 
-    it('should show alert on invalid login', async () => {
+  it('should show alert on invalid login', async () => {
     const user = userEvent.setup();
     const email = screen.getByLabelText('Email Address');
     const password = screen.getByLabelText('Password');
-    const submit = screen.getByRole('button', { name: /Login to your account/i });
+    const submit = screen.getByRole('button', {
+      name: /Login to your account/i,
+    });
 
     await user.type(email, 'wrong@example.com');
     await user.type(password, 'nope');
     await user.click(submit);
 
-    expect(screen.getByRole('alert')).toHaveTextContent(/invalid email or password/i);
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      /invalid email or password/i,
+    );
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 
-  it('should navigate to dashboard on valid login', async () => {
+  it('should navigate to home on valid login', async () => {
     const user = userEvent.setup();
     const email = screen.getByLabelText('Email Address');
     const password = screen.getByLabelText('Password');
-    const submit = screen.getByRole('button', { name: /Login to your account/i });
-    
+    const submit = screen.getByRole('button', {
+      name: /Login to your account/i,
+    });
+
     await user.type(email, 'user@example.com');
     await user.type(password, 'password123');
     await user.click(submit);
+
     expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true });
   });
 
-  it('should navigate to dashboard on valid login (enter key)', async () => {
+  it('should navigate to home on valid login', async () => {
     const user = userEvent.setup();
     const email = screen.getByLabelText('Email Address');
     const password = screen.getByLabelText('Password');
-    
+
     await user.type(email, 'user@example.com');
     await user.type(password, 'password123');
     await user.keyboard('{Enter}');
+
     expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true });
   });
 });

@@ -11,8 +11,8 @@ export default mergeConfig(
       setupFiles: './src/setupTests.js', // File eseguito prima dei test
       coverage: {
         provider: 'v8', // or 'istanbul'
-        reporter: ['text', 'json', 'html'],
-        all:false,
+        reporter: ['text', 'json', 'html', 'cobertura'],
+        reportsDirectory: 'coverage',
       },
     },
   }),

@@ -6,12 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:mock": "cross-env VITE_ENABLE_MSW=true vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
-    "test:cypress": "cypress open"
+    "test:ui": "vitest --ui",
+    "test:cypress": "cypress open",
+    "cy:run": "cypress run",
+    "test:e2e": "start-server-and-test 'npm run preview' http://127.0.0.1:4173/index.html 'npm run cy:run'",
+    "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\""
   },
   "dependencies": {
     "@apollo/client": "^4.0.7",
@@ -38,6 +43,7 @@
     "@vitejs/plugin-react-swc": "^4.1.0",
     "@vitest/coverage-v8": "^4.0.1",
     "@vitest/ui": "^4.0.1",
+    "cross-env": "^10.1.0",
     "cypress": "^15.5.0",
     "eslint": "^9.36.0",
     "eslint-config-prettier": "^10.1.8",
@@ -48,6 +54,7 @@
     "msw": "^2.11.6",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.7.1",
+    "start-server-and-test": "^2.1.2",
     "vite": "^7.1.7",
     "vitest": "^4.0.1"
   },

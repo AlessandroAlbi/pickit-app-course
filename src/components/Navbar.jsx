@@ -18,7 +18,7 @@ import AccountModal from './AccountModal';
 const pages = ['Home', 'Products', 'Customers'];
 const settings = ['Account', 'Logout'];
 
-function Navbar({setFeature}) {
+function Navbar({ setFeature }) {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -74,7 +74,11 @@ function Navbar({setFeature}) {
         <Toolbar disableGutters>
           <AbcIcon
             aria-label='logo'
-            sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
+            sx={{
+              display: { xs: 'none', md: 'flex' },
+              mr: 1,
+              bgcolor: 'orange',
+            }}
           />
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -86,7 +90,7 @@ function Navbar({setFeature}) {
               onClick={handleOpenNavMenu}
               color='inherit'
             >
-              <MenuIcon />
+              <MenuIcon data-testid='MenuIcon' />
             </IconButton>
             <Menu
               id='menu-appbar'
@@ -113,7 +117,11 @@ function Navbar({setFeature}) {
           </Box>
           <AbcIcon
             aria-label='logo'
-            sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
+            sx={{
+              display: { xs: 'flex', md: 'none' },
+              mr: 1,
+              bgcolor: 'orange',
+            }}
           />
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -170,9 +178,9 @@ function Navbar({setFeature}) {
       </Container>
 
       {/* User account */}
-      <AccountModal 
-        open={isAccountModalOpen} 
-        onClose={handleCloseAccountModal} 
+      <AccountModal
+        open={isAccountModalOpen}
+        onClose={handleCloseAccountModal}
       />
     </AppBar>
   );

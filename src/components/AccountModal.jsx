@@ -187,7 +187,6 @@ const AccountModal = ({ open, onClose }) => {
             aria-label='account tabs'
           >
             <Tab icon={<AccountCircle />} label='Profile' />
-
           </Tabs>
         </Box>
 

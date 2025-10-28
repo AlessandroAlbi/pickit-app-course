@@ -1,9 +1,9 @@
-// src/mocks/handlers.js
-import { http, HttpResponse, graphql } from 'msw';
+import { http, HttpResponse, graphql, delay } from 'msw';
 
 export const handlers = [
   // GraphQL handler for GET_ORDERS query
-  graphql.query('GetOrders', () => {
+  graphql.query('GetOrders', async () => {
+    await delay();
     return HttpResponse.json({
       data: {
         orders: [
@@ -23,7 +23,7 @@ export const handlers = [
             id: '2',
             order: 'ORD-002',
             status: 'completed',
-            total: 549.50,
+            total: 549.5,
             date: '2025-10-21T14:15:00Z',
             customer: {
               name: 'Bob Smith',
@@ -35,7 +35,7 @@ export const handlers = [
             id: '3',
             order: 'ORD-003',
             status: 'shipped',
-            total: 125.00,
+            total: 125.0,
             date: '2025-10-22T09:45:00Z',
             customer: {
               name: 'Carol Davis',
@@ -58,6 +58,7 @@ export const handlers = [
   }),
 
   http.get('https://api.example.com/account', async () => {
+    await delay();
     // Simulate successful update by returning the updated data
     return HttpResponse.json(
       {
